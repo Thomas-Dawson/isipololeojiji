@@ -18,14 +18,11 @@
             justify-content: center;
             align-items: center;
             overflow: hidden;
+            position: relative;
         }
         h1 {
             font-size: 3em;
             animation: fadeIn 2s ease-in-out;
-        }
-        p {
-            font-size: 1.5em;
-            margin: 20px;
         }
         .heart {
             font-size: 5em;
@@ -33,14 +30,13 @@
         }
         .buttons {
             position: relative;
-            width: 100%;
+            width: 200px;
             height: 150px;
             margin-top: 20px;
         }
         .btn {
             font-size: 1.5em;
             padding: 10px 20px;
-            margin: 10px;
             border: none;
             border-radius: 10px;
             cursor: pointer;
@@ -50,11 +46,16 @@
             background-color: #ff4081;
             color: white;
             transition: transform 0.3s ease-in-out;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
         }
         .btn-no {
             background-color: #ffffff;
             color: #ff4081;
-            position: absolute;
+            left: 20%;
+            top: 50%;
+            transform: translate(-50%, -50%);
         }
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -94,11 +95,6 @@
         
         const btnNo = document.getElementById('btn-no');
         const btnSi = document.getElementById('btn-si');
-        const buttonsContainer = document.querySelector('.buttons');
-
-        // Posición inicial del botón NO
-        btnNo.style.left = "60%";
-        btnNo.style.top = "50%";
 
         btnNo.addEventListener('click', () => {
             if (noCount < messages.length) {
@@ -109,25 +105,21 @@
             noCount++;
 
             // Aumentar el tamaño del botón SI
-            btnSi.style.transform = `scale(${1 + noCount * 0.2})`;
+            btnSi.style.transform = `translate(-50%, -50%) scale(${1 + noCount * 0.2})`;
 
-            // Mover el botón NO a una posición aleatoria
-            let newX = Math.random() * (window.innerWidth - btnNo.offsetWidth);
-            let newY = Math.random() * (window.innerHeight - btnNo.offsetHeight - 100);
-
-            // Asegurarse de que no se superponga con el botón SI
+            // Obtener posición del botón SI
             let siRect = btnSi.getBoundingClientRect();
-            let noRect = { left: newX, top: newY, right: newX + btnNo.offsetWidth, bottom: newY + btnNo.offsetHeight };
 
-            if (
-                noRect.right > siRect.left && 
-                noRect.left < siRect.right && 
-                noRect.bottom > siRect.top && 
-                noRect.top < siRect.bottom
-            ) {
-                newX = Math.random() * (window.innerWidth - btnNo.offsetWidth);
-                newY = Math.random() * (window.innerHeight - btnNo.offsetHeight - 100);
-            }
+            // Generar posición aleatoria cerca del botón SI sin tocarlo
+            let offsetX = (Math.random() > 0.5 ? 1 : -1) * (50 + Math.random() * 50); // Entre 50 y 100px a los lados
+            let offsetY = (Math.random() > 0.5 ? 1 : -1) * (50 + Math.random() * 50); // Entre 50 y 100px arriba/abajo
+
+            let newX = siRect.left + offsetX;
+            let newY = siRect.top + offsetY;
+
+            // Evitar que el botón NO salga de la pantalla
+            newX = Math.max(10, Math.min(window.innerWidth - btnNo.offsetWidth - 10, newX));
+            newY = Math.max(10, Math.min(window.innerHeight - btnNo.offsetHeight - 10, newY));
 
             btnNo.style.left = `${newX}px`;
             btnNo.style.top = `${newY}px`;
