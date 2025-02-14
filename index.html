@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>San Valentín</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background: linear-gradient(to right, #ff758c, #ff7eb3);
+            color: white;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        h1 {
+            font-size: 3em;
+            animation: fadeIn 2s ease-in-out;
+        }
+        p {
+            font-size: 1.5em;
+            margin: 20px;
+        }
+        .heart {
+            font-size: 5em;
+            animation: heartbeat 1.5s infinite;
+        }
+        .buttons {
+            margin-top: 20px;
+        }
+        .btn {
+            font-size: 1.5em;
+            padding: 10px 20px;
+            margin: 10px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .btn-si {
+            background-color: #ff4081;
+            color: white;
+            transition: transform 0.3s ease-in-out;
+        }
+        .btn-no {
+            background-color: #ffffff;
+            color: #ff4081;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <h1>Feliz San Valentín ❤️</h1>
+    <p>Eres la persona más especial en mi vida.</p>
+    <div class="heart">💖</div>
+    <div class="buttons">
+        <button class="btn btn-si" id="btn-si">SI</button>
+        <button class="btn btn-no" id="btn-no">NO</button>
+    </div>
+    <script>
+        let noCount = 0;
+        const messages = ["¿Estás segura?", "Piénsalo de nuevo", "No hagas esto 😢", "Te arrepentirás..."];
+        const btnNo = document.getElementById('btn-no');
+        const btnSi = document.getElementById('btn-si');
+
+        btnNo.addEventListener('click', () => {
+            if (noCount < messages.length) {
+                btnNo.textContent = messages[noCount];
+            } else {
+                btnNo.textContent = messages[messages.length - 1];
+            }
+            noCount++;
+            btnSi.style.transform = `scale(${1 + noCount * 0.2})`;
+        });
+
+        btnSi.addEventListener('click', () => {
+            window.location.href = 'si.html';
+        });
+    </script>
+</body>
+</html>
