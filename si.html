@@ -81,18 +81,18 @@
         const imageContainer = document.getElementById('imageContainer');
 
         function lanzarConfeti() {
-            const duracion = 5 * 1000; // 5 segundos
+            const duracion = 60 * 1000; // 60 segundos
             const end = Date.now() + duracion;
 
             (function frame() {
                 confetti({
-                    particleCount: 5,
+                    particleCount: 10,
                     angle: 60,
                     spread: 55,
                     origin: { x: 0 }
                 });
                 confetti({
-                    particleCount: 5,
+                    particleCount: 10,
                     angle: 120,
                     spread: 55,
                     origin: { x: 1 }
