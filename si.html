@@ -40,12 +40,12 @@
         }
         .play-button {
             margin-top: 250px;
-            padding: 255px 275px;
+            padding: 50px 60px;
             font-size: 20.5em;
-            background-color: #ff4081;
+            background: linear-gradient(to right, #ff758c, #ff7eb3); 
             color: white;
-            border: none;
-            border-radius: 10px;
+            border: none; 
+            border-radius: 10px; 
             cursor: pointer;
         }
         @keyframes fadeIn {
@@ -104,11 +104,19 @@
             })();
         }
 
+        function sincronizarColores() {
+            // Cambiar el color del fondo y el del botón al mismo tiempo
+            const colorFondo = 'linear-gradient(to right, #ff758c, #ff7eb3)';
+            document.body.style.background = colorFondo;
+            playButton.style.background = colorFondo;
+        }
+
         playButton.addEventListener('click', () => {
             audio.play().then(() => {
                 imageContainer.style.display = "block"; // Muestra la imagen con animación
                 playButton.style.display = "none"; // Oculta el botón
                 lanzarConfeti(); // Inicia el efecto de confeti
+                sincronizarColores(); // Sincroniza los colores de fondo y botón
             }).catch(error => {
                 console.log("Error al reproducir el audio:", error);
             });
