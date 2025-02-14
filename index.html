@@ -53,7 +53,7 @@
         .btn-no {
             background-color: #ffffff;
             color: #ff4081;
-            left: 20%;
+            left: 60%;
             top: 50%;
             transform: translate(-50%, -50%);
         }
@@ -109,18 +109,17 @@
 
             // Obtener posición del botón SI
             let siRect = btnSi.getBoundingClientRect();
+            let siCenterX = siRect.left + siRect.width / 2;
+            let siCenterY = siRect.top + siRect.height / 2;
 
-            // Generar posición aleatoria cerca del botón SI sin tocarlo
-            let offsetX = (Math.random() > 0.5 ? 1 : -1) * (50 + Math.random() * 50); // Entre 50 y 100px a los lados
-            let offsetY = (Math.random() > 0.5 ? 1 : -1) * (50 + Math.random() * 50); // Entre 50 y 100px arriba/abajo
+            // Generar nueva posición del botón NO en un radio de 10px alrededor del SI
+            let offsetX = (Math.random() > 0.5 ? 1 : -1) * (5 + Math.random() * 5);
+            let offsetY = (Math.random() > 0.5 ? 1 : -1) * (5 + Math.random() * 5);
 
-            let newX = siRect.left + offsetX;
-            let newY = siRect.top + offsetY;
+            let newX = siCenterX + offsetX;
+            let newY = siCenterY + offsetY;
 
-            // Evitar que el botón NO salga de la pantalla
-            newX = Math.max(10, Math.min(window.innerWidth - btnNo.offsetWidth - 10, newX));
-            newY = Math.max(10, Math.min(window.innerHeight - btnNo.offsetHeight - 10, newY));
-
+            // Ajustar la posición del botón NO
             btnNo.style.left = `${newX}px`;
             btnNo.style.top = `${newY}px`;
         });
