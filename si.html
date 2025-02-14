@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>dijistes k siii jiju</title>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -24,16 +25,18 @@
             animation: fadeIn 2s ease-in-out;
         }
         .image-container {
-            width: 200px;
-            height: 200px;
-            display: none; /* Oculta la imagen inicialmente */
-            animation: spin 3s linear infinite, pulse 1.5s infinite alternate;
+            width: 500px;
+            height: 500px;
+            display: none;
+            animation: serpentina 3s ease-in-out infinite, fadeIn 1s ease-in-out;
             margin-top: 20px;
         }
         .image-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
         }
         .play-button {
             margin-top: 250px;
@@ -49,13 +52,12 @@
             from { opacity: 0; }
             to { opacity: 1; }
         }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.2); }
+        @keyframes serpentina {
+            0% { transform: translateX(0) rotate(0deg) scale(1); }
+            25% { transform: translateX(30px) rotate(10deg) scale(1.1); }
+            50% { transform: translateX(-30px) rotate(-10deg) scale(1); }
+            75% { transform: translateX(30px) rotate(10deg) scale(1.1); }
+            100% { transform: translateX(0) rotate(0deg) scale(1); }
         }
     </style>
 </head>
@@ -63,10 +65,10 @@
     <h1></h1>
 
     <div class="image-container" id="imageContainer">
-        <img src="https://i.ibb.co/vxsM8WXh/C-LLATE-album-cover.jpg" alt="Fiesta">
+        <img src="foto.jpg" alt="Fiesta">
     </div>
     
-    <button class="play-button" id="playButton">  🎉  </button>
+    <button class="play-button" id="playButton"> 🎉 </button>
 
     <audio id="audio" loop>
         <source src="audio.mp3" type="audio/mpeg">
@@ -78,10 +80,35 @@
         const audio = document.getElementById('audio');
         const imageContainer = document.getElementById('imageContainer');
 
+        function lanzarConfeti() {
+            const duracion = 5 * 1000; // 5 segundos
+            const end = Date.now() + duracion;
+
+            (function frame() {
+                confetti({
+                    particleCount: 5,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 }
+                });
+                confetti({
+                    particleCount: 5,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 }
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+            })();
+        }
+
         playButton.addEventListener('click', () => {
             audio.play().then(() => {
-                imageContainer.style.display = "block"; // Muestra la imagen
+                imageContainer.style.display = "block"; // Muestra la imagen con animación
                 playButton.style.display = "none"; // Oculta el botón
+                lanzarConfeti(); // Inicia el efecto de confeti
             }).catch(error => {
                 console.log("Error al reproducir el audio:", error);
             });
