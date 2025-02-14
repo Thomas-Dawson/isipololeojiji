@@ -17,8 +17,6 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            overflow: hidden;
-            position: relative;
         }
         h1 {
             font-size: 3em;
@@ -29,33 +27,27 @@
             animation: heartbeat 1.5s infinite;
         }
         .buttons {
-            position: relative;
-            width: 200px;
-            height: 150px;
             margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         .btn {
             font-size: 1.5em;
             padding: 10px 20px;
+            margin: 10px;
             border: none;
             border-radius: 10px;
             cursor: pointer;
-            position: absolute;
+            transition: transform 0.3s ease-in-out;
         }
         .btn-si {
             background-color: #ff4081;
             color: white;
-            transition: transform 0.3s ease-in-out;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
         }
         .btn-no {
             background-color: #ffffff;
             color: #ff4081;
-            left: 60%;
-            top: 50%;
-            transform: translate(-50%, -50%);
         }
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -77,7 +69,8 @@
     </div>
     <script>
         let noCount = 0;
-        const messages = [
+        let scaleFactor = 1; // Guarda el tamaño del botón "SI"
+        let messages = [
             "tai segura?", 
             "piensala bien", 
             "no me hagas estooooo 😢", 
@@ -90,38 +83,30 @@
             "no hay arrepentimientos después 😬",
             "yo lo pensaría una vez más...",
             "última oportunidad para cambiar de opinión 😏",
-            "no diga que no le advertí... 😔"
+            "no digas que no le advertí... 😔"
         ];
-        
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                let j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
         const btnNo = document.getElementById('btn-no');
         const btnSi = document.getElementById('btn-si');
 
         btnNo.addEventListener('click', () => {
-            if (noCount < messages.length) {
-                btnNo.textContent = messages[noCount];
-            } else {
-                btnNo.textContent = messages[messages.length - 1];
+            if (noCount >= messages.length) {
+                noCount = 0;
+                shuffleArray(messages); // Mezclar los mensajes cuando se terminen
             }
+            btnNo.textContent = messages[noCount];
             noCount++;
 
-            // Aumentar el tamaño del botón SI
-            btnSi.style.transform = `translate(-50%, -50%) scale(${1 + noCount * 0.2})`;
-
-            // Obtener posición del botón SI
-            let siRect = btnSi.getBoundingClientRect();
-            let siCenterX = siRect.left + siRect.width / 2;
-            let siCenterY = siRect.top + siRect.height / 2;
-
-            // Generar nueva posición del botón NO en un radio de 10px alrededor del SI
-            let offsetX = (Math.random() > 0.5 ? 1 : -1) * (5 + Math.random() * 5);
-            let offsetY = (Math.random() > 0.5 ? 1 : -1) * (5 + Math.random() * 5);
-
-            let newX = siCenterX + offsetX;
-            let newY = siCenterY + offsetY;
-
-            // Ajustar la posición del botón NO
-            btnNo.style.left = `${newX}px`;
-            btnNo.style.top = `${newY}px`;
+            // Aumentar el tamaño del botón "SI" de forma acumulativa
+            scaleFactor += 0.2;
+            btnSi.style.transform = `scale(${scaleFactor})`;
         });
 
         btnSi.addEventListener('click', () => {
