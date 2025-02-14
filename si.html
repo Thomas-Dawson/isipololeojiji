@@ -33,6 +33,16 @@
             height: 100%;
             object-fit: cover;
         }
+        .play-button {
+            margin-top: 20px;
+            padding: 15px 25px;
+            font-size: 1.5em;
+            background-color: #ff4081;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -53,11 +63,25 @@
         <img src="https://i.ibb.co/vxsM8WXh/C-LLATE-album-cover.jpg" alt="Fiesta">
     </div>
     
-    <!-- Asegúrate de reemplazar 'audio.mp3' con un enlace válido -->
-    <audio autoplay loop>
+    <button class="play-button" id="playButton">Reproducir Música 🎵</button>
+
+    <audio id="audio" loop>
         <source src="audio.mp3" type="audio/mpeg">
         Tu navegador no soporta audio.
     </audio>
 
+    <script>
+        const playButton = document.getElementById('playButton');
+        const audio = document.getElementById('audio');
+
+        // Reproducir audio con interacción del usuario
+        playButton.addEventListener('click', () => {
+            audio.play().then(() => {
+                playButton.style.display = "none"; // Oculta el botón después de reproducir
+            }).catch(error => {
+                console.log("Error al reproducir el audio:", error);
+            });
+        });
+    </script>
 </body>
 </html>
