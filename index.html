@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>para mi bella dama</title>
+    <title>Para mi bella dama</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -17,6 +17,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            overflow: hidden;
         }
         h1 {
             font-size: 3em;
@@ -31,6 +32,9 @@
             animation: heartbeat 1.5s infinite;
         }
         .buttons {
+            position: relative;
+            width: 100%;
+            height: 150px;
             margin-top: 20px;
         }
         .btn {
@@ -40,6 +44,7 @@
             border: none;
             border-radius: 10px;
             cursor: pointer;
+            position: absolute;
         }
         .btn-si {
             background-color: #ff4081;
@@ -49,6 +54,7 @@
         .btn-no {
             background-color: #ffffff;
             color: #ff4081;
+            position: absolute;
         }
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -70,23 +76,29 @@
     </div>
     <script>
         let noCount = 0;
-const messages = [
-  "tai segura?", 
-  "piensala bien", 
-  "no me hagas estooooo 😢", 
-  "segurisisisima???", 
-  "piensala bien!!!!!!",
-  "después no hay vuelta atrás 👀",
-  "me rompe el corazón 💔",
-  "segura, segura, segurísima?",
-  "te voy a dar 5 segundos más para pensarlo",
-  "no hay arrepentimientos después 😬",
-  "yo lo pensaría una vez más...",
-  "última oportunidad para cambiar de opinión 😏",
-  "no diga que no le advertí... 😔"
-];
+        const messages = [
+            "tai segura?", 
+            "piensala bien", 
+            "no me hagas estooooo 😢", 
+            "segurisisisima???", 
+            "piensala bien!!!!!!",
+            "después no hay vuelta atrás 👀",
+            "me rompe el corazón 💔",
+            "segura, segura, segurísima?",
+            "te voy a dar 5 segundos más para pensarlo",
+            "no hay arrepentimientos después 😬",
+            "yo lo pensaría una vez más...",
+            "última oportunidad para cambiar de opinión 😏",
+            "no diga que no le advertí... 😔"
+        ];
+        
         const btnNo = document.getElementById('btn-no');
         const btnSi = document.getElementById('btn-si');
+        const buttonsContainer = document.querySelector('.buttons');
+
+        // Posición inicial del botón NO
+        btnNo.style.left = "60%";
+        btnNo.style.top = "50%";
 
         btnNo.addEventListener('click', () => {
             if (noCount < messages.length) {
@@ -95,7 +107,30 @@ const messages = [
                 btnNo.textContent = messages[messages.length - 1];
             }
             noCount++;
+
+            // Aumentar el tamaño del botón SI
             btnSi.style.transform = `scale(${1 + noCount * 0.2})`;
+
+            // Mover el botón NO a una posición aleatoria
+            let newX = Math.random() * (window.innerWidth - btnNo.offsetWidth);
+            let newY = Math.random() * (window.innerHeight - btnNo.offsetHeight - 100);
+
+            // Asegurarse de que no se superponga con el botón SI
+            let siRect = btnSi.getBoundingClientRect();
+            let noRect = { left: newX, top: newY, right: newX + btnNo.offsetWidth, bottom: newY + btnNo.offsetHeight };
+
+            if (
+                noRect.right > siRect.left && 
+                noRect.left < siRect.right && 
+                noRect.bottom > siRect.top && 
+                noRect.top < siRect.bottom
+            ) {
+                newX = Math.random() * (window.innerWidth - btnNo.offsetWidth);
+                newY = Math.random() * (window.innerHeight - btnNo.offsetHeight - 100);
+            }
+
+            btnNo.style.left = `${newX}px`;
+            btnNo.style.top = `${newY}px`;
         });
 
         btnSi.addEventListener('click', () => {
